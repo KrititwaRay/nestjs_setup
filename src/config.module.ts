@@ -1,6 +1,8 @@
 import { Global, Logger, Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { existsSync } from "fs";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MongooseModule } from "@nestjs/mongoose";
+import { ThrottlerModule } from '@nestjs/throttler';
+import { existsSync } from "node:fs";
 
 @Global()
 @Module({
@@ -12,7 +14,7 @@ import { existsSync } from "fs";
 
                 if (env) {
                     envFile = `.env.${env}`;
-                  
+
                     Logger.log(`Using environment-specific file: ${envFile}`, 'ConfigModule');
 
                 } else {
@@ -30,9 +32,23 @@ import { existsSync } from "fs";
 
             })(),
             isGlobal: true
-        })
-    ]
+        }),
+        MongooseModule.forRootAsync({
+            useFactory: (ConfigService: ConfigService) => ({
+                uri: ConfigService.get<string>('MONGO_URI'),
+                dbName: ConfigService.get<string>('DB_DATABASE') || 'NestJsSetUp',
+
+            }),
+            inject: [ConfigService]
+
+        }),
+        ThrottlerModule.forRoot([{ ttl: 60000, limit: 10 }]),
+
+    ],
+    providers: [
+        Logger
+    ],
 })
 
 
-export class ApiConfigModule {}
+export class ApiConfigModule { }
