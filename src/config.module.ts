@@ -14,7 +14,6 @@ import { existsSync } from "node:fs";
 
                 if (env) {
                     envFile = `.env.${env}`;
-
                     Logger.log(`Using environment-specific file: ${envFile}`, 'ConfigModule');
 
                 } else {
