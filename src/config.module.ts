@@ -15,15 +15,16 @@ import { existsSync } from "node:fs";
                 if (env) {
                     envFile = `.env.${env}`;
                     Logger.log(`Using environment-specific file: ${envFile}`, 'ConfigModule');
-
                 } else {
                     envFile = '.env.production';
                     Logger.log(`No NODE_ENV set, defaulting to: ${envFile}`, 'ConfigModule');
-
                 }
                 Logger.log(`Checking if file exists: ${envFile}`, 'ConfigModule');
+                // Check if the environment file exists
                 if (!existsSync(envFile)) {
                     Logger.error(`Environment file '${envFile}' not found. Please create the file or set NODE_ENV to a valid environment.`, 'ConfigModule');
+                    // Optionally, you can throw an error or handle it as needed
+                    // throw new Error(`Environment file '${envFile}' not found.`);
                     process.exit(1);
                 }
                 Logger.log(`Environment file '${envFile}' loaded successfully`, 'ConfigModule');
