@@ -24,20 +24,34 @@ import { existsSync } from "node:fs";
                 if (!existsSync(envFile)) {
                     Logger.error(`Environment file '${envFile}' not found. Please create the file or set NODE_ENV to a valid environment.`, 'ConfigModule');
                     // Optionally, you can throw an error or handle it as needed
-                    // throw new Error(`Environment file '${envFile}' not found.`);
+                
                     process.exit(1);
                 }
+                // If the file exists, return its path
                 Logger.log(`Environment file '${envFile}' loaded successfully`, 'ConfigModule');
                 return envFile;
 
             })(),
             isGlobal: true
         }),
+        // MongooseModule is used to connect to MongoDB
+        // MongooseModule.forRoot is used to establish a connection to the MongoDB database
+        // MongooseModule.forRootAsync is used to connect to MongoDB asynchronously, allowing for dynamic configuration
+        // Here, we are using MongooseModule.forRootAsync to connect to MongoDB using
         MongooseModule.forRootAsync({
+
+            // The useFactory function is used to create the configuration object for Mongoose
+            // It retrieves the MongoDB URI and database name from the ConfigService
             useFactory: (ConfigService: ConfigService) => ({
+                // The uri property is set to the value of the MONGO_URI environment variable
+                // The dbName property is set to the value of the DB_DATABASE environment variable or defaults
                 uri: ConfigService.get<string>('MONGO_URI'),
+                // The dbName property is set to the value of the DB_DATABASE environment variable or defaults to 'NestJsSetUp' 
                 dbName: ConfigService.get<string>('DB_DATABASE') || 'NestJsSetUp',
+                // The useNewUrlParser option is set to true to use the new URL string parser
+                useNewUrlParser: true,
             }),
+            // The inject property is used to inject the ConfigService into the useFactory function
             inject: [ConfigService]
 
         }),
