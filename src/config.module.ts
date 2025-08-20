@@ -37,7 +37,6 @@ import { existsSync } from "node:fs";
             useFactory: (ConfigService: ConfigService) => ({
                 uri: ConfigService.get<string>('MONGO_URI'),
                 dbName: ConfigService.get<string>('DB_DATABASE') || 'NestJsSetUp',
-
             }),
             inject: [ConfigService]
 
@@ -51,4 +50,22 @@ import { existsSync } from "node:fs";
 })
 
 
-export class ApiConfigModule { }
+export class ApiConfigModule {}
+
+
+
+/* in a NestJS project, you need to install both mongoose and @nestjs/mongoose to use MongoDB with NestJS effectively.
+Why Both Are Needed
+
+mongoose:
+
+This is the core MongoDB object modeling library for Node.js.
+It provides the functionality to interact with MongoDB, including schema definition, queries, and database operations.
+It is a dependency required by @nestjs/mongoose to function.
+
+
+@nestjs/mongoose:
+
+This is the NestJS-specific module that integrates Mongoose with the NestJS framework.
+It provides NestJS-specific features like dependency injection, decorators (e.g., @Schema, @Prop), and a clean way to configure Mongoose within the NestJS module system.
+It relies on the mongoose package to perform the actual MongoDB operations. */
