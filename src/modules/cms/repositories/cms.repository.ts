@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { Cms } from "../schemas/cms.schema";
+import { Cms, CmsDocument } from "../schemas/cms.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { BaseRepository } from "src/modules/common/bases/base.repository";
 
 @Injectable()
-export class CmsRepository {
+export class CmsRepository extends BaseRepository <CmsDocument> {
     constructor(
-         @InjectModel(Cms.name) private readonly cmsModel: Model<Cms>, 
-    ) {}
+         @InjectModel(Cms.name) private readonly cmsModel: Model<CmsDocument>, 
+    ) {
+        super(cmsModel)
+    }
 
 
     async create(createCmsDto: Partial<Cms>): Promise<Cms> {

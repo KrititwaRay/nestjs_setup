@@ -1,4 +1,5 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { HydratedDocument } from "mongoose";
 
 
 
@@ -10,6 +11,9 @@ export enum CmsSlug {
   TERMS_AND_CONDITIONS = 'terms-and-conditions',
   PRIVACY_POLICY = 'privacy-policy',
 }
+
+
+export type CmsDocument = HydratedDocument<Cms>;
 
 
 @Schema({ timestamps: true, versionKey: false })

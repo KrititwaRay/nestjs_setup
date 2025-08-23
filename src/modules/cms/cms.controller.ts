@@ -7,6 +7,12 @@ export class CmsController {
     constructor(private readonly cmsService: CmsService) {
     }
     
+    @Get('getall')
+    async getAllCms(){
+        return this.cmsService.getAll()
+
+    }
+    
     @Post('save')
     async create(@Body() dto: any): Promise<any> {
         return this.cmsService.create(dto);
@@ -18,5 +24,7 @@ export class CmsController {
         return this.cmsService.getDetails(query)
 
     }
+
+    
     
 }
