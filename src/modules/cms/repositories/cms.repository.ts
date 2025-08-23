@@ -6,7 +6,6 @@ import { Model } from "mongoose";
 @Injectable()
 export class CmsRepository {
     constructor(
-        
          @InjectModel(Cms.name) private readonly cmsModel: Model<Cms>, 
     ) {}
 
@@ -17,17 +16,14 @@ export class CmsRepository {
     }
 
     async getDetails(dto: any): Promise<any> {
-        let findObj: {
-            slug: string
-            page: string
-        } = {
+        let findObj: {slug: string, page: string } = {
             slug: dto.slug,
             page: ''
         }
+
         if(dto.page != '') {
             findObj.page = dto.page
         }
-
         const data = await this.cmsModel.findOne(findObj)
 
         return data;
