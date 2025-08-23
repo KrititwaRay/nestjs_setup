@@ -9,7 +9,7 @@ export class CmsService {
 
     async getAll(){
         const data = await this.cmsRepository.getAll({})
-        return data;
+        return { message: `Data fetched succcess fully.`, data: data };
     }
 
     async create(dto: any): Promise<any>{
