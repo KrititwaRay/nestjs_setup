@@ -1,4 +1,5 @@
 import {
+    FilterQuery,
     Model
 } from 'mongoose';
 
@@ -10,5 +11,7 @@ export class BaseRepository<T> {
         this.model = model;
     }
 
-    
+    async getAll (params: FilterQuery<T>): Promise<T[]>{
+        return await this.model.find(params)
+    }
 }
