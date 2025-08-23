@@ -14,8 +14,47 @@ async function bootstrap() {
   const logger = app.get(Logger);
 
 
+  if(configService.getOrThrow('NODE_ENV') === 'development'){
+    const createConfig = (title: string, description: string) => {
+      return new DocumentBuilder()
+      .setOpenAPIVersion('3.1.0')
+      .setTitle(title)
+      .setDescription(description)
+      .setVersion('1.0')
+      .addServer(configService.get('BACKEND_URL')!)
+      .build()
+    }
 
-  console.log("logger ", logger);
+
+     const configApi = createConfig(
+      `${configService.get('PROJECT_NAME')} Frontend application API`,
+      `The User API. <br><br> API endpoints for Admin panel API. <br> <a  href="/apidoc/v1"> Admin panel API-Doc </a> <br><br> 📥 OpenAPI JSON (Postman): <code>${configService.get('BACKEND_URL')}apidoc/v1/user/openapi.json</code>`,
+    );
+
+
+     const documentApi = SwaggerModule.createDocument(app, configApi);
+
+
+    SwaggerModule.setup(
+      'apidoc/v1',
+      app,
+      {
+        ...documentApi,
+
+      },
+      {
+        swaggerOptions: {
+          defaultModelsExpandDepth: -1, // Hides the Schemas section
+        },
+        jsonDocumentUrl: 'apidoc/v1/user/openapi.json',
+      }
+    )
+  }
+
+
+
+
+
 
   await app.listen(configService.getOrThrow('PORT'), () => {
     logger.debug(
