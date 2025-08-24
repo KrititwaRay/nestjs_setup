@@ -16,6 +16,8 @@ async function bootstrap() {
     `Starting application in [${env.toUpperCase()}] mode`,
   );
 
+  console.info('\x1b[32m%s\x1b[0m', '🔧 Node Version:', process.version);
+
 
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -23,27 +25,27 @@ async function bootstrap() {
   const logger = app.get(Logger);
 
 
-  if(configService.getOrThrow('NODE_ENV') === 'development'){
+  if (configService.getOrThrow('NODE_ENV') === 'development') {
     const createConfig = (title: string, description: string) => {
       return new DocumentBuilder()
-      .setOpenAPIVersion('3.1.0')
-      .setTitle(title)
-      .setDescription(description)
-      .setVersion('1.0')
-      .addServer(configService.get('BACKEND_URL')!)
-      .build()
+        .setOpenAPIVersion('3.1.0')
+        .setTitle(title)
+        .setDescription(description)
+        .setVersion('1.0')
+        .addServer(configService.get('BACKEND_URL')!)
+        .build()
     }
 
 
-     const configApi = createConfig(
+    const configApi = createConfig(
       `${configService.get('PROJECT_NAME')} Frontend application API`,
       `The User API. <br><br> API endpoints for Admin panel API. <br> <a  href="/apidoc/v1"> Admin panel API-Doc </a> <br><br> 📥 OpenAPI JSON (Postman): <code>${configService.get('BACKEND_URL')}apidoc/v1/user/openapi.json</code>`,
     );
 
 
-     const documentApi = SwaggerModule.createDocument(app, configApi);
+    const documentApi = SwaggerModule.createDocument(app, configApi);
 
-    
+
 
     SwaggerModule.setup(
       'apidoc/v1',
