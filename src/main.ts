@@ -9,6 +9,15 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const env = process.env.NODE_ENV || 'development';
 
+
+  console.info(
+    '\x1b[36m%s\x1b[0m',
+    '🚀 Bootstrap:',
+    `Starting application in [${env.toUpperCase()}] mode`,
+  );
+
+
+
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const logger = app.get(Logger);
@@ -34,6 +43,7 @@ async function bootstrap() {
 
      const documentApi = SwaggerModule.createDocument(app, configApi);
 
+    
 
     SwaggerModule.setup(
       'apidoc/v1',
