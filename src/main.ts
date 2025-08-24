@@ -4,6 +4,8 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config'; // It’s a built-in service that lets you easily access environment variables (process.env) and configuration values throughout your NestJS application.
 
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
+import compression from 'compression';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -28,7 +30,7 @@ async function bootstrap() {
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true, // allow cookies, authorization headers, or TLS client certificates.
   });
-
+  app.use(compression());
   if (configService.getOrThrow('NODE_ENV') === 'development') {
     const createConfig = (title: string, description: string) => {
       return new DocumentBuilder()
