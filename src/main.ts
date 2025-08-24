@@ -18,12 +18,16 @@ async function bootstrap() {
 
   console.info('\x1b[32m%s\x1b[0m', '🔧 Node Version:', process.version);
 
-
-
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const configService = app.get(ConfigService);
   const logger = app.get(Logger);
 
+
+  app.enableCors({
+    origin: '*',
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    credentials: true, // allow cookies, authorization headers, or TLS client certificates.
+  });
 
   if (configService.getOrThrow('NODE_ENV') === 'development') {
     const createConfig = (title: string, description: string) => {
